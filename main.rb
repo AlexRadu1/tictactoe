@@ -5,19 +5,19 @@ class Player
   def initialize(name,marker)
     @name = name
     @marker= marker
-    @points=Array.new(0)
+    @points=Array.new()
   end
   def show_player_info()
     puts "Player #{@name} marker is #{@marker}"
   end
   def add_mark(position)
-    @points.insert(position,@marker)
+    @points[position]=marker
   end    
 end 
 class Game
   WINNING = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]
   def initialize()
-    @board=Array[0,1,2,3,4,5,6,7,8]
+    @board=[0,1,2,3,4,5,6,7,8]
     puts "What is first players's name?"
     @player1=Player.new(gets.chomp,"X")
     @player1.show_player_info()
@@ -34,6 +34,7 @@ class Game
     0.upto(@board.length) do
       if turnCount % 2 == 0
         play_turn(@player1)
+        puts "#{@player1.points}"
           if game_won?(@player1) 
             print_board()
             puts "#{@player1.name} won! GG"
@@ -41,6 +42,7 @@ class Game
           end  
         else
         play_turn(@player2)
+        puts "#{@player2.points}"
           if game_won?(@player2) 
             print_board()
             puts "#{@player2.name} won! GG"
@@ -50,8 +52,9 @@ class Game
       print_board()
       turnCount+=1
     end
+    
   end  
-
+# 0 2 3 6 
   def game_won?(player)
     WINNING.any? do |line|
       line.all? { |pos| player.points[pos] == player.marker }
@@ -66,7 +69,7 @@ class Game
           play_turn(player)
         else
           player.add_mark(selection)
-          @board[selection] = player.marker
+          @board[selection]=player.marker
         end
   end
 
@@ -79,9 +82,3 @@ end
 
 newGame = Game.new()
 newGame.play()
-
-
-
-
-
-
